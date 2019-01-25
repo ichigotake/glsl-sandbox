@@ -1,1 +1,0 @@
-trans-ring.frag
