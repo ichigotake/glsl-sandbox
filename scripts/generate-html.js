@@ -4,7 +4,7 @@ const path = require('path');
 
 const rootDir = path.join( __dirname, '..');
 const shadersDir = path.join(rootDir, 'shaders/');
-const outputDir = path.join(rootDir, 'doc/');
+const outputDir = path.join(rootDir, 'docs/');
 
 let outputShaders = [];
 

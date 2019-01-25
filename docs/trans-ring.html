@@ -20,7 +20,11 @@
   	gl_Position = vec4(position, 1.0);
   }
 </script>
-<script type="x-shader/x-fragment" id="fs">precision mediump float;
+<script type="x-shader/x-fragment" id="fs">#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
 
 uniform float time;
 uniform vec2 resolution;
@@ -33,7 +37,7 @@ vec3 cPos = vec3(0.0, 0.0, 4.0);
 vec3 primaryColor = vec3(0.1, 0.5, 0.5);
 
 float distFuncRing(vec3 p){
-  vec2 t = vec2(time*0.5*2.0, 0.005);
+  vec2 t = vec2(time*0.5, 0.005);
   vec2 r = vec2(length(p.xy) - t.x, p.z);
   r = mod(r, 4.0);
   return length(r-2.) - t.y;
@@ -57,7 +61,7 @@ void main(void){
     gl_FragColor = vec4(vec3(primaryColor), 1.0);
   }else{
     //ふわふわした光
-    float beat = 1.0-sin(length(p)-time*0.5);
+    float beat = 1.0-sin(length(p)-time*0.1);
     vec3 color = primaryColor-beat;
     gl_FragColor = vec4(color, 1.0);
   }
