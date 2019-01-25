@@ -7,19 +7,19 @@ precision mediump float;
 uniform float time;
 uniform vec2 resolution;
 
- const float PI = 3.14159265;
- const float angle = 60.0;
- const float fov = angle * 0.5 * PI / 180.0;
- vec3 cPos = vec3(0.0, 0.0, 4.0);
+const float PI = 3.14159265;
+const float angle = 60.0;
+const float fov = angle * 0.5 * PI / 180.0;
+vec3 cPos = vec3(0.0, 0.0, 4.0);
 
- vec3 primaryColor = vec3(0.1, 0.5, 0.5);
+vec3 primaryColor = vec3(0.1, 0.5, 0.5);
 
- float distFuncRing(vec3 p){
-   vec2 t = vec2(time*0.5, 0.005);
-   vec2 r = vec2(length(p.xy) - t.x, p.z);
-   r = mod(r, 4.0);
-   return length(r-2.) - t.y;
- }
+float distFuncRing(vec3 p){
+  vec2 t = vec2(time*0.5, 0.005);
+  vec2 r = vec2(length(p.xy) - t.x, p.z);
+  r = mod(r, 4.0);
+  return length(r-2.) - t.y;
+}
 
 void main(void){
  	vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
@@ -29,9 +29,9 @@ void main(void){
  	float rLen = 0.0;
   vec3 rPos = cPos;
  	for(int i = 0; i < 16; i++){
- 		distance = distFuncRing(rPos);
- 		rLen += distance;
- 		rPos = cPos + ray * rLen;
+ 		 distance = distFuncRing(rPos);
+ 		 rLen += distance;
+ 		 rPos = cPos + ray * rLen;
  	}
 
  	if(abs(distance) < 0.001){
