@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+  <h1>Shaders</h1>
+  <ol>
+    <% shaders.forEach((value) => { %>
+      <li><a target="_blank" href="<%= value.filename %>"><%= value.name %></a></li>
+    <% }) %>
+  </ol>
+</body>
+</html>

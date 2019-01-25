@@ -1,0 +1,25 @@
+{
+  "name": "glsl-sandbox",
+  "version": "1.0.0",
+  "description": "I'm learning ray marching.",
+  "main": "index.js",
+  "scripts": {
+    "build": "node scripts/generate-html.js",
+    "start": "echo \"run 'npm run build'\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ichigotake/glsl-sandbox.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ichigotake/glsl-sandbox/issues"
+  },
+  "homepage": "https://github.com/ichigotake/glsl-sandbox#readme",
+  "dependencies": {
+    "ejs": "^2.6.1"
+  }
+}
