@@ -22,25 +22,25 @@ float distFuncRing(vec3 p){
 }
 
 void main(void){
- 	vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
- 	vec3 ray = normalize(vec3(sin(fov) * p.x, sin(fov) * p.y, -cos(fov)));
+  vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+  vec3 ray = normalize(vec3(sin(fov) * p.x, sin(fov) * p.y, -cos(fov)));
 
- 	float distance = 0.0;
- 	float rLen = 0.0;
+  float distance = 0.0;
+  float rLen = 0.0;
   vec3 rPos = cPos;
- 	for(int i = 0; i < 16; i++){
- 		 distance = distFuncRing(rPos);
- 		 rLen += distance;
- 		 rPos = cPos + ray * rLen;
- 	}
+  for(int i = 0; i < 16; i++){
+    distance = distFuncRing(rPos);
+    rLen += distance;
+ 	  rPos = cPos + ray * rLen;
+  }
 
- 	if(abs(distance) < 0.001){
+  if(abs(distance) < 0.001){
     //リング
     gl_FragColor = vec4(vec3(primaryColor), 1.0);
- 	}else{
+  }else{
     //ふわふわした光
     float beat = 1.0-sin(length(p)-time*0.1);
     vec3 color = primaryColor-beat;
     gl_FragColor = vec4(color, 1.0);
- 	}
+  }
 }
