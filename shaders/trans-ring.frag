@@ -11,7 +11,6 @@ precision mediump float;
 const float ringDirection = -1.0;
 
 // uniform sampler2D osc_ringDirection;
-const float osc_bpm = 3.0;
 
 // OSC on /fuwaRate
 // uniform sampler2D osc_fuwaRate;
@@ -31,7 +30,7 @@ const float fov = angle * 0.5 * PI / 180.0;
 vec3 cPos = vec3(0.0, 0.0, 4.0);
 
 float bpm(vec2 p) {
-  return osc_bpm;
+  return 150.0 / 60.0;
   // return texture2D(osc_bpm, p).x / 60.0;
 }
 
