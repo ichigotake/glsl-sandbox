@@ -1,5 +1,5 @@
 # glsl-sandbox
-I'm learning ray marching.
+I'm learning to ray marching.
 
 ## Demo
 
