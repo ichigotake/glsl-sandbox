@@ -1,6 +1,7 @@
 const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path');
+const mkdirp = require('mkdirp');
 
 const rootDir = path.join( __dirname, '..');
 const shadersDir = path.join(rootDir, 'shaders/');
@@ -8,34 +9,38 @@ const outputDir = path.join(rootDir, 'docs/');
 
 let outputShaders = [];
 
-let generate = (filename) => {
-  let outputPath = path.join(outputDir, filename).replace(/\.frag$/, '.html');
+let compile = (shaderPath) => {
+  let outputPath = path.join(outputDir, shaderPath.replace(rootDir, '')).replace(/\.frag$/, '.html');
   let templatePath = path.join(rootDir, 'templates', 'shader.html.ejs');
   let template = ejs.compile(fs.readFileSync(templatePath, {encoding: "utf-8"}));
   let params = {
-    'fragmentShader': fs.readFileSync(path.join(shadersDir, filename)),
+    'fragmentShader': fs.readFileSync(shaderPath),
   };
-  fs.writeFileSync(outputPath, template(params), {encoding: "utf-8"});
+
   console.log(outputPath);
+  mkdirp.sync(path.dirname(outputPath), (err) => console.log(err));
+  fs.writeFileSync(outputPath, template(params), {encoding: "utf-8"});
+  let p = outputPath.replace(outputDir, '');
   outputShaders.push({
-    filename: path.basename(outputPath),
-    name: filename.replace('-', ' ').replace(/\.frag/, ''),
+    filename: p.replace('shaders/', ''),
+    path: p,
   });
 };
 
-let readFile = (filename) => {
+let build = (filename) => {
   let files = fs.readdirSync(filename);
-  files.forEach((filename) => {
-    let shadersPath = path.join(shadersDir, filename);
-    if (fs.statSync(shadersPath).isDirectory()) {
-      readFileSync(shadersPath, generate);
+  files.forEach((f) => {
+    let shaderPath = path.join(filename, f);
+    if (fs.statSync(shaderPath).isDirectory()) {
+      console.log('SHADER', shaderPath);
+      build(shaderPath);
     } else {
-      generate(filename);
+      compile(shaderPath);
     }
   });
 };
 
-readFile(shadersDir);
+build(shadersDir);
 let index = fs.readFileSync(path.join(rootDir, 'templates', 'index.html.ejs'), {encoding: "utf-8"});
 let template = ejs.compile(index);
 let params = {

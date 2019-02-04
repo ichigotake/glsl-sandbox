@@ -6,11 +6,11 @@
 </head>
 <body>
   <h1>Shaders</h1>
-  <ol>
+  <ul>
     <% shaders.forEach((value) => { %>
-      <li><a target="_blank" href="<%= value.filename %>"><%= value.name %></a></li>
+      <li><a rel="noopener" target="_blank" href="<%= value.path %>"><%= value.filename %></a></li>
     <% }) %>
-  </ol>
+  </ul>
 
   <a href="https://github.com/ichigotake/glsl-sandbox"></a>
 
