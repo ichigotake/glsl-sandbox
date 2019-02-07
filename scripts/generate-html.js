@@ -17,7 +17,7 @@ let compile = (shaderPath) => {
     'fragmentShader': fs.readFileSync(shaderPath),
   };
 
-  console.log(outputPath);
+  console.log(outputPath.replace(rootDir, ''));
   mkdirp.sync(path.dirname(outputPath), (err) => console.log(err));
   fs.writeFileSync(outputPath, template(params), {encoding: "utf-8"});
   let p = outputPath.replace(outputDir, '');
@@ -32,7 +32,6 @@ let build = (filename) => {
   files.forEach((f) => {
     let shaderPath = path.join(filename, f);
     if (fs.statSync(shaderPath).isDirectory()) {
-      console.log('SHADER', shaderPath);
       build(shaderPath);
     } else {
       compile(shaderPath);

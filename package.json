@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ichigotake/glsl-sandbox#readme",
   "dependencies": {
-    "ejs": "^2.6.1"
+    "ejs": "^2.6.1",
+    "mkdirp": "^0.5.1"
   }
 }
