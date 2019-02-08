@@ -1,2 +1,4 @@
 node_modules/
 veda-recordings/
+# For live
+.liverc
