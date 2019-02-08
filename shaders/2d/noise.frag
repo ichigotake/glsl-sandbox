@@ -2,6 +2,12 @@ precision mediump float;
 
 uniform vec2 resolution;
 uniform float time;
+uniform sampler2D image2;
+
+const float redScale   = 0.298912;
+const float greenScale = 0.586611;
+const float blueScale  = 0.114478;
+const vec3  monochromeScale = vec3(redScale, greenScale, blueScale);
 
 float random (vec2 st) {
     return fract(sin(dot(st.xy,
@@ -36,5 +42,9 @@ void main(void) {
   p.y = step(p.y, 0.3);
   color = max(vec3(p.y), color);
 
-  gl_FragColor = vec4(color, 1.0);
+  vec3 v = texture2D(image2, p).rgb;
+  v.r += texture2D(image2, p + vec2(.1, 0.)).b;
+  v.b += texture2D(image2, p - vec2(.1, 0.)).g;
+  float grayColor = dot(v, monochromeScale);
+  gl_FragColor = vec4(color + grayColor, 1.0);
 }
