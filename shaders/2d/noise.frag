@@ -31,7 +31,7 @@ void main(void) {
 
   // 縦断するノイズ
   vec2 v = p;
-  v.y = fract(t) - fract(v-time*0.1).y + 0.6;
+  v.y = fract(t) - fract(v-time*0.1).y + 0.99;
   v.y += random(vec2(v.x*t, v.y*t));
   v.y = step(v.y, 0.1);
   color = vec3(v.y);

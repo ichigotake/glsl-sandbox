@@ -20,58 +20,42 @@
   	gl_Position = vec4(position, 1.0);
   }
 </script>
-<script type="x-shader/x-fragment" id="fs">precision mediump float;
+<script type="x-shader/x-fragment" id="fs">#ifdef GL_ES
+precision mediump float;
+#endif
 
 uniform vec2 resolution;
 uniform float time;
 
-const float redScale   = 0.298912;
-const float greenScale = 0.586611;
-const float blueScale  = 0.114478;
-const vec3  monochromeScale = vec3(redScale, greenScale, blueScale);
+const float lineWeight = 0.05;
 
-float random (vec2 st) {
-    return fract(sin(dot(st.xy,
-                         vec2(12.9898,78.233)))
-                 * 43758.5453123);
-}
-
-mat2 rotate2d(float _angle){
-    return mat2(
-        cos(_angle),-sin(_angle),
-        sin(_angle),cos(_angle));
-}
-
-void main(void) {
-  vec2 uv = gl_FragCoord.xy / resolution.xy;
-  vec2 p = uv;
-
-  float vSplit = 4.2;
+void mainImage(out vec4 fragColor, in vec2 uv) {
+  uv = abs(uv);
+  uv += length(uv+time);
 
   vec3 color = vec3(0.0);
-  float t = time*0.0001;
+  float x = mod(uv.x, 2.0);
+  float y = mod(uv.y, 2.0);
+  if(x <= lineWeight){
+    float y = mod(uv.y+time, 4.0);
+    color = vec3(y);
+  }
+  if(y <= lineWeight){
+    float x = mod(uv.x+time, 4.0);
+    color = vec3(x);
+  }
+  if(x <= 0.9 && y <= 0.9){
+    color = vec3(0.0);
+  }
 
-  // 縦断するノイズ
-  vec2 v = p;
-  v.y = fract(t) - fract(v-time*0.1).y + 0.99;
-  v.y += random(vec2(v.x*t, v.y*t));
-  v.y = step(v.y, 0.1);
-  color = vec3(v.y);
+  fragColor = vec4(color, 1.0);
+}
 
-  // 細長いノイズ
-  p *= rotate2d(-0.03);
-  p.y = fract(p*vSplit).y;
-  p.y += random(vec2(p.x*t, p.y*t));
-  p.y = step(p.y, 0.05);
-  color = max(vec3(p.y), color);
-
-  // 全体に散らすノイズ
-  p.y = fract(p*vSplit).y;
-  p.y += random(vec2(p.x*t, p.y*t));
-  p.y = step(p.y, .03);
-  color = max(vec3(p.y-0.8), color);
-
-  gl_FragColor = vec4(color, 1.0);
+void main() {
+  vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+  vec4 color;
+  mainImage(color, uv);
+  gl_FragColor = color;
 }
 </script>
 <script>
